@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Upload - Foreskin Tracker{% endblock %}
+
+{% block content %}
+<section class="upload-section">
+    <h2>Upload Progress Photo</h2>
+    <p class="instructions">Take a consistent photo of your restoration progress and upload it below. For best results:</p>
+    <ul class="upload-tips">
+        <li>Use consistent lighting conditions</li>
+        <li>Maintain the same camera angle and distance</li>
+        <li>Take photos at the same time of day (preferably morning)</li>
+        <li>Ensure the area is fully visible in the frame</li>
+    </ul>
+
+    <form method="POST" enctype="multipart/form-data" class="upload-form">
+        <div class="form-group">
+            <label for="file">Select image to upload:</label>
+            <input type="file" name="file" id="file" accept=".png, .jpg, .jpeg, .gif" required>
+            <div class="file-preview" id="file-preview">
+                <img id="preview-image" src="#" alt="Preview" style="display: none;">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="date">Date (optional):</label>
+            <input type="date" name="date" id="date" value="{{ now().strftime('%Y-%m-%d') }}">
+        </div>
+        
+        <div class="form-group">
+            <label for="notes">Notes (optional):</label>
+            <textarea name="notes" id="notes" rows="3" placeholder="Add any notes about your current routine, changes, or observations..."></textarea>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Upload & Process</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</section>
+
+<section class="privacy-reminder">
+    <h3>Privacy Reminder</h3>
+    <p>Your images are processed locally and are not shared with any third parties. We recommend using this application on a private, password-protected device.</p>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Preview uploaded image
+    document.getElementById('file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            const previewImage = document.getElementById('preview-image');
+            
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';
+            }
+            
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %}

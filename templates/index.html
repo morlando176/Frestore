@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Foreskin Tracker{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h2>Track Your Foreskin Restoration Progress</h2>
+    <p>Use our advanced U-Net image segmentation technology to monitor and track your foreskin restoration journey.</p>
+    <div class="cta-buttons">
+        <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload Image</a>
+        <a href="{{ url_for('gallery') }}" class="btn btn-secondary">View Gallery</a>
+    </div>
+</section>
+
+<section class="features">
+    <h3>How It Works</h3>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">📷</div>
+            <h4>Upload Photos</h4>
+            <p>Take consistent photos of your restoration progress and upload them securely.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h4>AI Processing</h4>
+            <p>Our U-Net deep learning model analyzes your images to track skin growth and changes.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h4>Track Progress</h4>
+            <p>View your progress over time with our visual gallery and tracking tools.</p>
+        </div>
+    </div>
+</section>
+
+<section class="info">
+    <h3>About Foreskin Restoration</h3>
+    <p>Foreskin restoration is the process of expanding the residual skin on the penis to recreate the foreskin which may have been removed by circumcision or other injury. This can be done by tissue expansion using manual methods or devices.</p>
+    <p>Tracking your progress is essential for maintaining motivation and adjusting your restoration techniques for optimal results.</p>
+</section>
+
+<section class="privacy-note">
+    <h3>Privacy First</h3>
+    <p>Your privacy is our top priority. All images are processed locally on your device and are not shared with any third parties. You have complete control over your data.</p>
+</section>
+{% endblock %}

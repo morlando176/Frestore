@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery - Foreskin Tracker{% endblock %}
+
+{% block content %}
+<section class="gallery-section">
+    <h2>Progress Gallery</h2>
+    
+    {% if images %}
+        <div class="gallery-controls">
+            <div class="view-options">
+                <button class="btn btn-small active" id="grid-view-btn">Grid View</button>
+                <button class="btn btn-small" id="timeline-view-btn">Timeline View</button>
+            </div>
+            <div class="sort-options">
+                <label for="sort-select">Sort by:</label>
+                <select id="sort-select">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="gallery-container grid-view" id="gallery-container">
+            {% for image in images %}
+                <div class="gallery-item">
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="Progress image">
+                    </div>
+                    <div class="image-info">
+                        <div class="image-date">{{ image.split('_')[0] }}</div>
+                        <div class="image-actions">
+                            <button class="btn btn-small btn-view">View Full</button>
+                            <button class="btn btn-small btn-delete">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="comparison-tool">
+            <h3>Compare Images</h3>
+            <p>Select two images to compare your progress side by side.</p>
+            <div class="comparison-selectors">
+                <div class="comparison-selector">
+                    <label for="before-select">Before:</label>
+                    <select id="before-select">
+                        <option value="">Select an image</option>
+                        {% for image in images %}
+                            <option value="{{ image }}">{{ image.split('_')[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="comparison-selector">
+                    <label for="after-select">After:</label>
+                    <select id="after-select">
+                        <option value="">Select an image</option>
+                        {% for image in images %}
+                            <option value="{{ image }}">{{ image.split('_')[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="compare-btn">Compare</button>
+            
+            <div class="comparison-result" id="comparison-result" style="display: none;">
+                <div class="comparison-images">
+                    <div class="before-image">
+                        <h4>Before</h4>
+                        <img id="before-image" src="" alt="Before image">
+                    </div>
+                    <div class="after-image">
+                        <h4>After</h4>
+                        <img id="after-image" src="" alt="After image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-gallery">
+            <p>No images have been uploaded yet.</p>
+            <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload Your First Image</a>
+        </div>
+    {% endif %}
+</section>
+
+<section class="progress-tips">
+    <h3>Tracking Tips</h3>
+    <ul>
+        <li>Take photos at regular intervals (weekly or monthly)</li>
+        <li>Be patient - restoration is a slow process that takes months or years</li>
+        <li>Look for gradual changes in skin texture and coverage</li>
+        <li>Consider tracking additional metrics like FEC (Forced Erect Coverage)</li>
+    </ul>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // View toggle functionality
+    document.getElementById('grid-view-btn').addEventListener('click', function() {
+        document.getElementById('gallery-container').className = 'gallery-container grid-view';
+        this.classList.add('active');
+        document.getElementById('timeline-view-btn').classList.remove('active');
+    });
+    
+    document.getElementById('timeline-view-btn').addEventListener('click', function() {
+        document.getElementById('gallery-container').className = 'gallery-container timeline-view';
+        this.classList.add('active');
+        document.getElementById('grid-view-btn').classList.remove('active');
+    });
+    
+    // Comparison tool functionality
+    document.getElementById('compare-btn').addEventListener('click', function() {
+        const beforeSelect = document.getElementById('before-select');
+        const afterSelect = document.getElementById('after-select');
+        
+        if (beforeSelect.value && afterSelect.value) {
+            const beforeImage = document.getElementById('before-image');
+            const afterImage = document.getElementById('after-image');
+            
+            beforeImage.src = "{{ url_for('static', filename='uploads/') }}" + beforeSelect.value;
+            afterImage.src = "{{ url_for('static', filename='uploads/') }}" + afterSelect.value;
+            
+            document.getElementById('comparison-result').style.display = 'block';
+        }
+    });
+</script>
+{% endblock %}
